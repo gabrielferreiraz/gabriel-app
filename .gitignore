@@ -1,0 +1,9 @@
+# Ignorar dependências do Node
+**/node_modules/
+
+# Ignorar builds
+**/dist/
+**/build/
+
+# Ignorar arquivos de ambiente
+*.env
