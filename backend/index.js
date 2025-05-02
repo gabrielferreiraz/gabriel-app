@@ -32,13 +32,12 @@ app.get('/instance/create/:userId', (req, res) => {
     qrCode: null,
     ready: false,
     webhookUrl: null,
-    userId, // <- Adicionando o userId ali
-    logs: [] // 👈 aqui
+    userId, 
+    logs: [] 
   };
   
 
   client.on('qr', (qr) => {
-    console.log(`QR Code gerado: ${qr}`);
     qrcode.toDataURL(qr, (err, url) => {
       if (err) {
         console.error('Erro ao gerar QR Code:', err);
@@ -48,14 +47,13 @@ app.get('/instance/create/:userId', (req, res) => {
     });
   });
 
-  client.on('authenticated', () => {
-    console.log(`[${userId}] Autenticado`);
-  });
-
   client.on('ready', () => {
     sessionData.ready = true;
-    console.log(`[${userId}] Pronto`);
-    res.send('Client is ready.'); 
+    console.log(`[${userId}] Pronto`); 
+  });
+
+  client.on('authenticated', () => {
+    console.log(`[${userId}] Autenticado`);
   });
 
   client.on('message', async (msg) => {
@@ -65,7 +63,7 @@ app.get('/instance/create/:userId', (req, res) => {
       type: msg.type,
       timestamp: new Date()
     };
-    sessionData.logs.push(log); // 👈 salva
+    sessionData.logs.push(log);
   
     if (sessionData.webhookUrl) {
       try {
@@ -114,7 +112,7 @@ app.post('/instance/disconnect/:userId', async (req, res) => {
     activeClients.delete(userId);
 
     res.send(`Sessão ${userId} desconectada.`);
-  } catch (err) {+
+  } catch (err) {
     res.status(500).send('Erro ao desconectar.');
   }
 });
@@ -149,6 +147,11 @@ app.post('/message/send-text/:userId', async (req, res) => {
     res.status(500).send('Erro ao enviar.');
   }
 });
+
+app.get('/', (req, res) => {
+  res.send('API WhatsApp ativa 🚀');
+});
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Backend multi-sessão rodando na porta ${PORT}`));
