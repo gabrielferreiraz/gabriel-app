@@ -12,5 +12,9 @@
     "strict": true,
     "skipLibCheck": true
   },
+  "scripts": {
+  "build": "cd frontend && npm ci && npm run build",
+  "start": "cd backend && node index.js"
+},
   "include": ["src"]
 }
